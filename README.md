@@ -27,7 +27,7 @@ It is based on phusion-baseimage with ssh removed, for shell access whilst the c
 
 Part of what makes our containers work so well is by allowing you to specify your own `PUID` and `PGID`. This avoids nasty permissions errors with relation to data volumes (`-v` flags). When an application is installed on the host OS it is normally added to the common group called users, Docker apps due to the nature of the technology can't be added to this group. So we added this feature to let you easily choose when running your containers.
 
-## Setting up the application 
+## Setting up the application
 
 Create a user and database in your mysql/mariadb server (not root) and then follow the setup wizard in the webui. Use the IP address for "host" of your database server.
 
@@ -37,9 +37,19 @@ Create a user and database in your mysql/mariadb server (not root) and then foll
 * Upgrade to the latest version simply `docker restart freshrss`.
 * To monitor the logs of the container in realtime `docker logs -f freshrss`.
 
+## Using with dokku
 
+```bash
+dokku apps:create freshrss
+dokku mysql:create freshrssdb
+dokku mysql:link freshrssdb freshrss
+dokku storage:mount freshrss /data/freshrss/config:/config
+
+# Client side:
+git remote add dokku dokku@dokku.me:freshrss
+git push dokku master
+```
 
 ## Versions
 + **23.11.15:** Update dependencies to latest requirements
-+ **21.08.15:** Initial Release. 
-
++ **21.08.15:** Initial Release.
